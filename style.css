@@ -35,8 +35,8 @@ body{
 
 .calculator__tile--div {
     margin-top: 3rem;
-    height: auto;
-    width: auto;
+       height: calc(auto - 10);
+    width: calc(auto - 10);
     display: flex;
     align-items: center;
     justify-content: center;
