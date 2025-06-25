@@ -284,7 +284,10 @@ cursor: pointer;
     p, p.include--tax, p.exclude--tax, footer{
         font-size: 1rem;
     }
-
+     .hourly--rate{
+        width: 85%;
+    }
+    
 }
 
 
