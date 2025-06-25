@@ -313,7 +313,7 @@ function resetBtnIsClicked() {
     }
     shiftTypeInput.insertAdjacentHTML(
       "afterend",
-      `<p class="pay-rate-info-text">ℹ️ The default Seasonal Ticket Agent pay rate is : $27.49,  VB: $28.39.</p> <p class="toggle-hourly-rate">Enter Custom Hourly Pay Rate</p>`
+      `<p class="pay-rate-info-text">ℹ️ The default Seasonal Ticket Agent pay rate is FPTA: $27.49,  VB: $28.39.</p> <p class="toggle-hourly-rate">Enter Custom Hourly Pay Rate</p>`
     );
     shiftTypeInput.value = "";
   }
@@ -519,7 +519,7 @@ function displayNetPay(
 </div>`;
 }
 
-const toggleHourlyRateHTML = `<p class="pay-rate-info-text">ℹ️ The default Seasonal Ticket Agent pay rate is : $${
+const toggleHourlyRateHTML = `<p class="pay-rate-info-text">ℹ️ The default Seasonal Ticket Agent pay rate is FPTA: $${
   regularPayRateFPTA + ", "
 } VB: $${regularPayRateVB}.</p>
 

@@ -32,11 +32,10 @@ body{
     /* flex-wrap: wrap;  */
 }
 
-
 .calculator__tile--div {
     margin-top: 3rem;
-     height: 40%;
-    width: 40%;
+    height: 50%;
+    width: 60%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -47,7 +46,7 @@ body{
     border: 1px solid rgb(255, 255, 255, 0.3);
     /* box-shadow: 0px 20px 40px black; */
     border-radius: 1rem;
-    padding: 1rem;
+    /* padding: 1rem; */
     text-align: center;
     color: rgb(255, 255, 255);
     margin-left: 3rem;
@@ -59,7 +58,7 @@ body{
     box-shadow: 0px 30px 60px rgba(255, 255, 255, 0.2);
 }
 .application-heading{
-    width: 50%;
+    width: 60%;
     line-height: 2.8rem;
     text-align: center;
 }
@@ -269,9 +268,20 @@ cursor: pointer;
     font-weight: 800;
  }
  
+/* For Mobile screens */
+@media (max-width: 999px){
+    
+}
 
-@media (min-width: 1200px) {
+
+
+/* For screens above 1000px  */
+@media (min-width: 1000px) { 
          .start-time, .end-time, .hourly--rate, .tax--percentage, .shift-type-input, .shift-type-input{
             text-align: center;
+         }
+         .calculator__tile--div{
+            height: auto;
+            width: auto;
          }
 } 
