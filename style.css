@@ -213,6 +213,7 @@ font-size: 16.1px;
 .toggle-bc-ferries, .toggle-generic-calc{
     color: white;
     text-decoration: underline;
+    font-weight: 600;
 }
 .toggle-bc-ferries:hover, .toggle-generic-calc:hover{
 font-weight: 600;
