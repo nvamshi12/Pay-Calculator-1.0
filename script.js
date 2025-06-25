@@ -554,6 +554,8 @@ wholeBody.addEventListener("click", function (e) {
         ` <input id="hourly--rate" class="hourly--rate"type="number" placeholder="Hourly Rate ($)"></input>`
       );
     hourlyRateInput = document.querySelector(".hourly--rate");
+    resultDiv = document.querySelector(".result-div");
+    if (resultDiv) resultDiv.remove();
     wholeBody.style.background = `linear-gradient(to right, rgb(15, 111, 238), rgb(133, 157, 231))`;
   }
   // WHEN SWITCH TO 'BC FERRIES' IS CLICKED - 'generic calc text' should become visible.
@@ -570,6 +572,8 @@ wholeBody.addEventListener("click", function (e) {
     hourlyRateInput.remove();
     wholeBody.style.background = `linear-gradient( to right, rgb(60, 148, 255),  rgb(120, 154, 250))`;
     // wholeBody.style.background = `linear-gradient(to left,rgb(123, 0, 255)  rgb(15, 111, 238), rgb(133, 157, 231))`;
+    resultDiv = document.querySelector(".result-div");
+    if (resultDiv) resultDiv.remove();
   }
 
   if (e.target === toggleHourlyRateText) {
