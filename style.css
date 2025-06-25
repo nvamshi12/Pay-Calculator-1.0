@@ -87,7 +87,9 @@ font-size: 16.1px;
 /* label{
     text-align: left;
 } */
-
+.shift-type-input{
+    font-size: 16.1px;
+}
 .hourly--rate, .tax--percentage{
     /* margin-bottom: 1rem; */
     letter-spacing: 0.2px;
@@ -284,7 +286,7 @@ cursor: pointer;
     p, p.include--tax, p.exclude--tax, footer{
         font-size: 1rem;
     }
-     .hourly--rate{
+     .hourly--rate, .shift-type-input{
         width: 85%;
     }
     
