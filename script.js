@@ -26,6 +26,7 @@ const bcFerriesTextHTML = `<p class="toggle-bc-ferries">Switch To BC Ferries Pay
 const regularPayRateFPTA = 27.49; // Regular pay rate for FPTA.
 const regularPayRateVB = 28.39; // Regular pay rate for FPTA.
 let toggleHourlyRateText = document.querySelector(".toggle-hourly-rate");
+let removeHourlyRateText = document.querySelector(".remove-hourly-rate");
 let payRateInfoText = document.querySelector(".pay-rate-info-text");
 let calcBreakdownText = document.querySelector(".breakdown-calculation");
 let resultDiv;
@@ -33,31 +34,22 @@ let netPayText;
 let calculationResultHTML;
 let applicationHeading = document.querySelector(".application-heading");
 
-// const genericCalcHTML = `
-//             <div class="calculator__tile--div">
-//             <h1 style="font-weight: 900;">   Pay Calculator </h1>
+// When start & end time are in focus, switch input type to time.
+shiftStartInput.addEventListener("focus", function () {
+  shiftStartInput.type = "time";
+});
+shiftEndInput.addEventListener("focus", function () {
+  shiftEndInput.type = "time";
+});
 
-//             <input id="start-time" class="start-time"type="time"></input>
-
-//             <input id="end-time" class="end-time"type="time"></input>
-
-//             <input id="hourly--rate" class="hourly--rate"type="number" placeholder="Hourly Rate ($)"></input>
-//             <div class="include--tax--div">
-//             <p class="include--tax">Include Tax Rate</p>
-//             </div>
-//             <div class="buttons">
-//             <button class="reset-btn">
-//                 Reset
-//             </button>
-//             <button class="calculate-btn">
-//                Calculate
-//             </button>
-//         </div>
-//         <div class="switch-text-div">
-//         <p class="toggle-bc-ferries">Switch To BC Ferries Pay Calculator</p>
-//         </div>
-//         </div>
-//      <footer>Made by 💛amshi </footer>`;
+// When start & end time is out of focus, switch to text type so that the placeholder is displayed.
+shiftStartInput.addEventListener("blur", function () {
+  // if no value is inputted
+  if (!shiftStartInput.value) shiftStartInput.type = "text";
+});
+shiftEndInput.addEventListener("blur", function () {
+  if (!shiftEndInput.value) shiftEndInput.type = "text";
+});
 
 buttonsDiv.addEventListener("click", function (e) {
   // when calculate button is clicked.
@@ -97,6 +89,12 @@ function calculateBtnIsClicked() {
     console.log("This executes when there is no input.");
     return;
   }
+
+  const scrollDownHTML = `<p class="scroll-text" style="color: rgba(0, 0, 0, 0.82);">
+  Scroll down to see your results ↓
+</p>`;
+  let scrollText = document.querySelector(".scroll-text");
+  if (!scrollText) buttonsDiv.insertAdjacentHTML("afterend", scrollDownHTML);
 
   // --> 1. convert the inputted times to decimals or normal numbers.
 
@@ -303,14 +301,18 @@ function resetBtnIsClicked() {
   shiftEndInput.value = "";
   shiftTypeInput = document.querySelector(".shift-type-input");
   hourlyRateInput = document.querySelector(".hourly--rate");
+  scrollText = document.querySelector(".scroll-text");
+  if (scrollText) scrollText.remove();
   if (shiftTypeInput) {
     if (hourlyRateInput) hourlyRateInput.remove();
     let payInfoText = document.querySelector(".pay-rate-info-text");
     let toggleHourlyRateText = document.querySelector(".toggle-hourly-rate");
     if (payInfoText) {
       payInfoText.remove();
-      toggleHourlyRateText.remove();
+      if (toggleHourlyRateText) toggleHourlyRateText.remove();
     }
+    removeHourlyRateText = document.querySelector(".remove-hourly-rate");
+    if (removeHourlyRateText) removeHourlyRateText.remove();
     shiftTypeInput.insertAdjacentHTML(
       "afterend",
       `<p class="pay-rate-info-text">ℹ️ The default Seasonal Ticket Agent pay rate is FPTA: $27.49,  VB: $28.39.</p> <p class="toggle-hourly-rate">Enter Custom Hourly Pay Rate</p>`
@@ -471,14 +473,21 @@ function displayNetPay(
   shiftType
 ) {
   // if (resultDiv) resultDiv.remove(); // if result-div exists, remove it.
-
-  const netPay = Math.fround(
-    hourlyRateInput.value * totalShiftDurationInDecimals -
-      (hourlyRateInput.value *
-        totalShiftDurationInDecimals *
-        taxPercentageInput.value) /
-        100
-  ).toFixed(2);
+  let netPay;
+  if (!shiftType) {
+    netPay = Math.fround(
+      hourlyRateInput.value * totalShiftDurationInDecimals -
+        (hourlyRateInput.value *
+          totalShiftDurationInDecimals *
+          taxPercentageInput.value) /
+          100
+    ).toFixed(2);
+  }
+  if (shiftType) {
+    netPay = Math.fround(
+      grossPay - (grossPay * taxPercentageInput.value) / 100
+    ).toFixed(2);
+  }
   console.log(`Your net pay is ${netPay}`);
   console.log(
     `Net pay display executed and resultDiv at starting is: ${resultDiv}`
@@ -532,6 +541,7 @@ wholeBody.addEventListener("click", function (e) {
   toggleGenericCalcText = document.querySelector(".toggle-generic-calc");
   toggleBcFerriesText = document.querySelector(".toggle-bc-ferries");
   toggleHourlyRateText = document.querySelector(".toggle-hourly-rate");
+  removeHourlyRateText = document.querySelector(".remove-hourly-rate");
 
   // WHEN SWITCH TO 'GENERIC CALC' IS CLICKED - 'BC Ferries calc text' should become visible.
   if (e.target === toggleGenericCalcText) {
@@ -547,6 +557,14 @@ wholeBody.addEventListener("click", function (e) {
     if (payRateInfoText) payRateInfoText.remove();
     toggleHourlyRateText = document.querySelector(".toggle-hourly-rate");
     if (toggleHourlyRateText) toggleHourlyRateText.remove();
+    removeHourlyRateText = document.querySelector(".remove-hourly-rate");
+    if (removeHourlyRateText) removeHourlyRateText.remove();
+    taxPercentageInput = document.querySelector(".tax--percentage");
+    if (taxPercentageInput) taxPercentageInput.remove();
+    excludeTaxText = document.querySelector(".exclude--tax");
+    if (excludeTaxText) excludeTaxText.remove();
+    includeTaxDiv.innerHTML = ` <p class="include--tax">Include Tax Rate</p>`;
+
     hourlyRateInput = document.querySelector(".hourly--rate");
     if (!hourlyRateInput)
       shiftEndInput.insertAdjacentHTML(
@@ -556,6 +574,8 @@ wholeBody.addEventListener("click", function (e) {
     hourlyRateInput = document.querySelector(".hourly--rate");
     resultDiv = document.querySelector(".result-div");
     if (resultDiv) resultDiv.remove();
+    scrollText = document.querySelector(".scroll-text");
+    if (scrollText) scrollText.remove();
     wholeBody.style.background = `linear-gradient(to right, rgb(15, 111, 238), rgb(133, 157, 231))`;
   }
   // WHEN SWITCH TO 'BC FERRIES' IS CLICKED - 'generic calc text' should become visible.
@@ -573,6 +593,13 @@ wholeBody.addEventListener("click", function (e) {
     wholeBody.style.background = `linear-gradient( to right, rgb(60, 148, 255),  rgb(120, 154, 250))`;
     // wholeBody.style.background = `linear-gradient(to left,rgb(123, 0, 255)  rgb(15, 111, 238), rgb(133, 157, 231))`;
     resultDiv = document.querySelector(".result-div");
+    scrollText = document.querySelector(".scroll-text");
+    taxPercentageInput = document.querySelector(".tax--percentage");
+    if (taxPercentageInput) taxPercentageInput.remove();
+    excludeTaxText = document.querySelector(".exclude--tax");
+    if (excludeTaxText) excludeTaxText.remove();
+    includeTaxDiv.innerHTML = ` <p class="include--tax">Include Tax Rate</p>`;
+    if (scrollText) scrollText.remove();
     if (resultDiv) resultDiv.remove();
   }
 
@@ -580,17 +607,32 @@ wholeBody.addEventListener("click", function (e) {
     shiftTypeInput = document.querySelector(".shift-type-input");
     payRateInfoText = document.querySelector(".pay-rate-info-text");
     hourlyRateInput = document.querySelector(".hourly--rate");
-    if (!hourlyRateInput)
+    if (!hourlyRateInput) {
       shiftTypeInput.insertAdjacentHTML(
         "afterend",
         `<input id="hourly--rate" class="hourly--rate"type="number" placeholder="Hourly Rate ($)"></input>`
       );
+      hourlyRateInput = document.querySelector(".hourly--rate");
+      hourlyRateInput.insertAdjacentHTML(
+        "afterend",
+        `<p class="pay-rate-info-text">ℹ️ The default Seasonal Ticket Agent pay rate is FPTA: $${
+          regularPayRateFPTA + ", "
+        } VB: $${regularPayRateVB}.</p><p class="remove-hourly-rate">Remove Custom Hourly Pay Rate</p>`
+      );
+      removeHourlyRateText = document.querySelector(".remove-hourly-rate");
+    }
     toggleHourlyRateText.remove();
     payRateInfoText.remove();
   }
-  calcBreakdownText = document.querySelector(".breakdown-calculation");
-
-  if (e.target === calcBreakdownText) {
+  if (e.target === removeHourlyRateText) {
+    hourlyRateInput = document.querySelector(".hourly--rate");
+    hourlyRateInput.remove();
+    removeHourlyRateText = document.querySelector(".remove-hourly-rate");
+    removeHourlyRateText.remove();
+    payRateInfoText = document.querySelector(".pay-rate-info-text");
+    payRateInfoText.remove();
+    shiftTypeInput = document.querySelector(".shift-type-input");
+    shiftTypeInput.insertAdjacentHTML("afterend", toggleHourlyRateHTML);
   }
 });
 console.log(buttonsDiv);
@@ -611,8 +653,17 @@ function bcFerriesPayCalculation(
       ? 0
       : Math.abs(8 - shiftStartTimeInDecimals);
 
-  const timeAfter_5_InDecimals =
+  let timeAfter_5_InDecimals =
     17 - shiftEndTimeInDecimals < 0 ? Math.abs(shiftEndTimeInDecimals - 17) : 0;
+
+  // if user enters 12:00AM as end-time 'shiftEndTimeInDecimals' will be equal to zero. So fixing it by writing the below condition.
+  if (shiftEndTimeInDecimals == 0) {
+    timeAfter_5_InDecimals = 24 - 17;
+  }
+
+  // if (shiftEndTimeInDecimals > 0 &&  ) {
+
+  // }
   const timeAfter_8_but_Before_5_InDecimals =
     totalShiftDurationInDecimals -
     (timeBefore_8_InDecimals + timeAfter_5_InDecimals);
@@ -752,10 +803,15 @@ function bcFerriesPayCalculation(
     ${
       timeEligibleForOvertimeInDecimals > 0
         ? "<p class='breakdown-text'>✨ Overtime Duration: <span class='result-text'>" +
-          timeEligibleForOvertimeInDecimals.toFixed(2) +
+          timeEligibleForOvertimeInDecimals.toFixed(1) +
           " hrs. </span></p>"
         : "<p class='breakdown-text'>🫣 No overtime pay today.</p>"
     }
+    ${
+      totalShiftDurationInDecimals > 8
+        ? "<p class='breakdown-text'>🤯 You entered a shift duration of more than 8 hours. Results may not be accurate.</p>"
+        : ""
+    } 
     `;
 
     calcBreakdownText.insertAdjacentHTML("beforebegin", calcBreakdownHTML);
