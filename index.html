@@ -8,7 +8,6 @@
         <link rel="stylesheet" href="./style.css">
         <link rel="icon" type="image/png" sizes="16x16" href="./assets/salary.png">
         <link rel="icon" type="image/png" sizes="32x32" href="./assets/salary.png" >
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <script defer src="./script.js"></script>
     </head>
     <body>
@@ -16,9 +15,9 @@
         <div class="calculator__tile--div">
             <h1 class="application-heading"style="font-weight: 900;">   Pay Calculator </h1>
             <!-- <label for="start-time">Start Time</label> -->
-            <input id="start-time" class="start-time"type="text" placeholder="Start Time (HH:MM)"></input>
+            <input id="start-time" class="start-time"type="text" placeholder="Start Time (HH:MM)"   pattern="^([0-1]\d|2[0-3]):([0-5]\d)$" ></input>
             <!-- <label for="end-time">End Time</label> -->
-            <input id="end-time" class="end-time"type="text" placeholder="End Time (HH:MM)"></input>
+            <input id="end-time" class="end-time"type="text" placeholder="End Time (HH:MM)"   pattern="^([0-1]\d|2[0-3]):([0-5]\d)$" ></input>
             <!-- <label for="hourly--rate">Hourly Rate($)</label> -->
             <input id="hourly--rate" class="hourly--rate"type="number" placeholder="Hourly Rate ($)"></input>
             <div class="include--tax--div">
